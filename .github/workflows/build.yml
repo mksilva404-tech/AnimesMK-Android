@@ -3,32 +3,36 @@ name: Build AnimesMK APK
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Baixar projeto
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - name: Configurar Java
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
+      - name: Instalar Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platforms;android-35,build-tools;35.0.0'
 
-      - name: Install Android SDK
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
-
-      - uses: gradle/actions/setup-gradle@v4
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
 
-      - name: Build APK
+      - name: Compilar APK
         run: gradle --no-daemon assembleDebug
 
-      - name: Save APK
+      - name: Salvar APK
         uses: actions/upload-artifact@v4
         with:
           name: AnimesMK-APK
