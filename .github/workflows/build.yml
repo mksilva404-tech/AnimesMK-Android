@@ -27,6 +27,9 @@ jobs:
             platforms;android-35
             build-tools;35.0.0
 
+      - name: Aceitar licenças Android
+        run: yes | sdkmanager --licenses
+
       - name: Compilar APK
         run: ./gradlew --no-daemon assembleDebug
 
