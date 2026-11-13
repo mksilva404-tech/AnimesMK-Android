@@ -1,0 +1,16 @@
+# Gradle e compilação
+.gradle/
+**/build/
+
+# Arquivos locais
+.idea/
+local.properties
+*.iml
+
+# APKs e pacotes gerados
+*.apk
+*.aab
+
+# Backups temporários
+*.bak
+*backup*.kt
