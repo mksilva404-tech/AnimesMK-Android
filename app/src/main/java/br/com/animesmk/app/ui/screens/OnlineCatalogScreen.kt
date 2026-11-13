@@ -26,7 +26,9 @@ fun OnlineCatalogScreen(onSelect: (Anime) -> Unit) {
     var searched by remember { mutableStateOf(false) }
 
     Column(
-        Modifier.fillMaxSize().padding(horizontal = 18.dp)
+        Modifier
+            .fillMaxSize()
+            .padding(horizontal = 18.dp)
     ) {
         Text(
             "Explorar animes",
@@ -106,13 +108,17 @@ fun OnlineCatalogScreen(onSelect: (Anime) -> Unit) {
                         .clickable {
                             onSelect(
                                 Anime(
-                                    item.title,
-                                    item.genres.ifBlank { "Anime" },
-                                    item.description.ifBlank {
+                                    title = item.title,
+                                    genre = item.genres.ifBlank { "Anime" },
+                                    description = item.description.ifBlank {
                                         "Sinopse não disponível."
                                     },
-                                    "Livre",
-                                    Color(0xFF54251C)
+                                    age = "Não informada",
+                                    color = Color(0xFF54251C),
+                                    aniListId = item.id,
+                                    coverUrl = item.cover,
+                                    episodes = item.episodes,
+                                    year = item.year
                                 )
                             )
                         }
@@ -139,7 +145,7 @@ fun OnlineCatalogScreen(onSelect: (Anime) -> Unit) {
                         Spacer(Modifier.height(6.dp))
 
                         Text(
-                            item.genres,
+                            item.genres.ifBlank { "Gênero não informado" },
                             color = Color(0xFFB388FF),
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
@@ -153,9 +159,11 @@ fun OnlineCatalogScreen(onSelect: (Anime) -> Unit) {
                         )
 
                         Text(
-                            if (item.episodes > 0)
+                            if (item.episodes > 0) {
                                 "${item.episodes} episódios"
-                            else "Episódios não informados",
+                            } else {
+                                "Episódios não informados"
+                            },
                             color = Color.LightGray,
                             fontSize = 12.sp
                         )

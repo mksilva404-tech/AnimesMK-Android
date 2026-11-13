@@ -7,5 +7,9 @@ data class Anime(
     val genre: String,
     val description: String,
     val age: String,
-    val color: Color
+    val color: Color,
+    val aniListId: Int? = null,
+    val coverUrl: String = "",
+    val episodes: Int = 0,
+    val year: Int = 0
 )

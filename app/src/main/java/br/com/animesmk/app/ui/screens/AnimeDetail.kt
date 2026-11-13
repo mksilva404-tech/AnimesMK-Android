@@ -9,8 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
+import coil.compose.AsyncImage
 
 @Composable
 fun AnimeDetail(
@@ -22,7 +24,8 @@ fun AnimeDetail(
     onBack: () -> Unit
 ) {
     Column(
-        Modifier.fillMaxSize()
+        Modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
@@ -35,17 +38,32 @@ fun AnimeDetail(
         Spacer(Modifier.height(18.dp))
 
         Box(
-            Modifier.fillMaxWidth().height(230.dp)
+            Modifier
+                .fillMaxWidth()
+                .height(250.dp)
                 .background(
-                    Brush.linearGradient(listOf(anime.color, Color.Black)),
+                    Brush.linearGradient(
+                        listOf(anime.color, Color.Black)
+                    ),
                     RoundedCornerShape(14.dp)
                 ),
             contentAlignment = Alignment.Center
         ) {
+            if (anime.coverUrl.isNotBlank()) {
+                AsyncImage(
+                    model = anime.coverUrl,
+                    contentDescription = "Capa de ${anime.title}",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black),
+                    contentScale = ContentScale.Crop
+                )
+            }
+
             Text(
                 anime.title,
                 color = Color.White,
-                fontSize = 32.sp,
+                fontSize = 27.sp,
                 fontWeight = FontWeight.Black
             )
         }
@@ -59,12 +77,43 @@ fun AnimeDetail(
             fontWeight = FontWeight.Bold
         )
 
+        Spacer(Modifier.height(8.dp))
+
         Text(
-            "${anime.age} • ${anime.genre} • Dub | Leg",
+            anime.genre,
             color = purple
         )
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(10.dp))
+
+        Text(
+            buildString {
+                append("Classificação: ${anime.age}")
+                if (anime.year > 0) append(" • ${anime.year}")
+                if (anime.episodes > 0) append(" • ${anime.episodes} episódios")
+            },
+            color = Color.LightGray,
+            fontSize = 13.sp
+        )
+
+        if (anime.aniListId != null) {
+            Text(
+                "AniList ID: ${anime.aniListId}",
+                color = Color.Gray,
+                fontSize = 12.sp
+            )
+        }
+
+        Spacer(Modifier.height(15.dp))
+
+        Text(
+            "Sinopse",
+            color = Color.White,
+            fontSize = 21.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(Modifier.height(6.dp))
 
         Text(
             anime.description,
@@ -72,7 +121,7 @@ fun AnimeDetail(
             fontSize = 16.sp
         )
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(22.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Button(
@@ -83,7 +132,8 @@ fun AnimeDetail(
                 )
             ) {
                 Text(
-                    if (playing) "Fechar player" else "▶  Assistir Agora",
+                    if (playing) "Fechar informações"
+                    else "▶  Opções de reprodução",
                     color = Color.Black
                 )
             }
@@ -98,24 +148,54 @@ fun AnimeDetail(
         }
 
         if (playing) {
-            Spacer(Modifier.height(15.dp))
-            Text("VÍDEO DE TESTE DO PLAYER", color = purple)
+            Spacer(Modifier.height(18.dp))
 
-            AnimePlayer(
-                "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4"
+            Text(
+                "REPRODUÇÃO",
+                color = purple,
+                fontSize = 19.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                "Este anime ainda não possui uma fonte de reprodução conectada. " +
+                    "O catálogo fornece informações e capas, mas não hospeda episódios.",
+                color = Color.LightGray
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                "As opções oficiais de streaming poderão aparecer aqui quando " +
+                    "forem disponibilizadas pela fonte de dados.",
+                color = Color.Gray,
+                fontSize = 13.sp
             )
         } else {
-            Spacer(Modifier.height(25.dp))
+            Spacer(Modifier.height(22.dp))
+
             Text(
-                "Temporada 1",
+                "Episódios",
                 color = Color.White,
                 fontSize = 21.sp,
                 fontWeight = FontWeight.Bold
             )
+
+            Spacer(Modifier.height(6.dp))
+
             Text(
-                "Os episódios serão adicionados quando as fontes autorizadas forem conectadas.",
+                if (anime.episodes > 0) {
+                    "${anime.episodes} episódios cadastrados no AniList. " +
+                        "A lista de reprodução ainda será conectada."
+                } else {
+                    "A quantidade de episódios não está informada no catálogo."
+                },
                 color = Color.LightGray
             )
         }
+
+        Spacer(Modifier.height(25.dp))
     }
 }
