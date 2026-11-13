@@ -138,13 +138,7 @@ fun AnimeApp() {
                             { search = it },
                             { selected = it }
                         )
-                        2 -> CatalogScreen(
-                            "Explorar",
-                            animes.filter { it.title.contains(search, true) },
-                            search,
-                            { search = it },
-                            { selected = it }
-                        )
+                        2 -> OnlineCatalogScreen(onSelect = { selected = it })
                         3 -> HomeScreen(animes.reversed(), favorites, { selected = it }, { tab = 2 }, true)
                         else -> AccountScreen()
                     }
