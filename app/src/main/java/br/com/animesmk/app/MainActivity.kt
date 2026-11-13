@@ -1,6 +1,9 @@
 package br.com.animesmk.app
 
 import android.os.Bundle
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -57,6 +60,12 @@ fun AnimeApp() {
                     style = MaterialTheme.typography.headlineLarge,
                     color = Color(0xFFB388FF)
                 )
+                    Image(
+                        painter = painterResource(id = R.drawable.animesmk_banner),
+                        contentDescription = "Capa personalizada AnimesMK",
+                        modifier = Modifier.fillMaxWidth().aspectRatio(1f),
+                        contentScale = ContentScale.Fit
+                    )
                 Text("Seu universo de animes", color = Color.LightGray)
 
                 Spacer(Modifier.height(18.dp))
