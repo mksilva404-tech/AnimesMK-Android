@@ -30,6 +30,9 @@ jobs:
       - name: Aceitar licenças Android
         run: yes | sdkmanager --licenses
 
+      - name: Aceitar licenças Android
+        run: yes | sdkmanager --licenses
+
       - name: Compilar APK
         run: ./gradlew --no-daemon assembleDebug
 
